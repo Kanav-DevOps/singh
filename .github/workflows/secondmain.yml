@@ -25,7 +25,6 @@ jobs:
         
     - name: Install dependencies
       run: |
-        dir
         pip install pyinstaller
         
     - name: Print current directory
@@ -35,7 +34,6 @@ jobs:
         
     - name: Build executable
       run: |
-        dir
         pyinstaller --onefile age_cal.py  # Adjust path as needed
         
     - name: Print current directory
@@ -66,12 +64,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: age_cal_exe
-        path: dist/age_cal.exe  # Specify the path where age_cal.exe should be downloaded
+        path: age_cal  # Specify the directory where age_cal.exe should be downloaded
         
-    - name: Download Inno Setup
+    - name: Download and install Inno Setup
       run: |
         curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
-        start /wait innosetup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
+        Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
         
     - name: Print current directory
       run: |
@@ -80,19 +78,18 @@ jobs:
         
     - name: Create Inno Setup script
       run: |
-        dir
         echo "[Setup]
-        OutputBaseFilename=setupofapp
-        AppVersion=1.0
-        DefaultDirName={pf}\newappsetup
-        DisableProgramGroupPage=yes
-        UninstallDisplayIcon={app}\{#AppName}.exe
-        Compression=lzma
-        SolidCompression=yes
+OutputBaseFilename=setup
+AppVersion=1.0
+DefaultDirName={pf}\YourAppName
+DisableProgramGroupPage=yes
+UninstallDisplayIcon={app}\age_cal.exe
+Compression=lzma
+SolidCompression=yes
 
-        [Files]
-        Source: dist/age_cal.exe; DestDir: {app}; Flags: ignoreversion
-        " > setup_script.iss
+[Files]
+Source: age_cal/age_cal.exe; DestDir: {app}; Flags: ignoreversion
+" > setup_script.iss
         
     - name: Print current directory
       run: |
@@ -101,7 +98,6 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
-        dir
         "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup_script.iss
         
     - name: Print current directory
@@ -113,4 +109,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: setup_exe
-        path: dist/age_cal.exe  # Adjust path to setup.exe output file
+        path: setup.exe  # Adjust path to setup.exe output file
