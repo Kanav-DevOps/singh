@@ -7,12 +7,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Use windows-latest for Windows instance
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
       
+    - name: Print current directory
+      run: |
+        echo "Current working directory: $PWD"
+        
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -22,12 +26,20 @@ jobs:
       run: |
         pip install pyinstaller
         
+    - name: Print current directory
+      run: |
+        echo "Current working directory: $PWD"
+        
     - name: Build executable
       run: |
         pyinstaller --onefile age_cal.py
+        
+    - name: Print current directory
+      run: |
+        echo "Current working directory: $PWD"
         
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: age_cal_exe
-        path: age_cal.exe
+        path: dist/age_cal.exe
