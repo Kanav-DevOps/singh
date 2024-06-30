@@ -1,0 +1,33 @@
+name: Build Age Calculator
+
+on:
+  push:
+    branches:
+      - main  # Adjust branch name as per your main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'  # Replace with your Python version
+        
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller
+        
+    - name: Build executable
+      run: |
+        pyinstaller --onefile age_cal.py
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: age_cal_exe
+        path: dist/age_cal.exe
