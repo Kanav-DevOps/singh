@@ -1,4 +1,4 @@
-  name: Build and Package Application
+name: Build and Package Application
 
 on:
   push:
@@ -89,7 +89,7 @@ jobs:
 
         [Files]
         Source: age_cal/age_cal.exe; DestDir: {app}; Flags: ignoreversion
-        " > spkb.iss
+        " > setup_script.iss
         
     - name: Print current directory
       run: |
