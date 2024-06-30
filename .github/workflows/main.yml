@@ -32,7 +32,7 @@ jobs:
         
     - name: Build executable
       run: |
-        pyinstaller --onefile age_cal.py
+        pyinstaller --onefile age_cal.py  # Adjust path as needed
         
     - name: Print current directory
       run: |
