@@ -91,7 +91,7 @@ jobs:
         SolidCompression=yes
 
         [Files]
-        Source: path/to/age_cal.exe; DestDir: {app}; Flags: ignoreversion
+        Source: dist/age_cal.exe; DestDir: {app}; Flags: ignoreversion
         " > setup_script.iss
         
     - name: Print current directory
