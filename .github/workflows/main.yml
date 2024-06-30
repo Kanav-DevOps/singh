@@ -30,4 +30,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: age_cal_exe
-        path: dist/age_cal.exe
+        path: age_cal.exe
