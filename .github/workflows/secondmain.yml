@@ -98,7 +98,7 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
-        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup_script.iss
+        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" inno.iss
         
     - name: Print current directory
       run: |
@@ -108,5 +108,5 @@ jobs:
     - name: Upload Inno Setup installer artifact
       uses: actions/upload-artifact@v2
       with:
-        name: setup_exe
-        path: setup.exe  # Adjust path to setup.exe output file
+        name: setupap_exe
+        path: setupap.exe  # Adjust path to setup.exe output file
