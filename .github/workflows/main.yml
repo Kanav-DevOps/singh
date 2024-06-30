@@ -16,6 +16,7 @@ jobs:
     - name: Print current directory
       run: |
         echo "Current working directory: $PWD"
+        dir  # List contents of current directory
         
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -29,14 +30,17 @@ jobs:
     - name: Print current directory
       run: |
         echo "Current working directory: $PWD"
+        dir  # List contents of current directory
         
     - name: Build executable
       run: |
+        dir
         pyinstaller --onefile age_cal.py  # Adjust path as needed
         
     - name: Print current directory
       run: |
         echo "Current working directory: $PWD"
+        dir  # List contents of current directory
         
     - name: Upload artifact
       uses: actions/upload-artifact@v2
