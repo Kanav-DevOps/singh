@@ -68,10 +68,10 @@ jobs:
         name: age_cal_exe
         path: dist/age_cal.exe  # Specify the path where age_cal.exe should be downloaded
         
-    - name: Download and install Inno Setup
+    - name: Download Inno Setup
       run: |
-        wget https://jrsoftware.org/download.php/is.exe -OutFile is.exe
-        .\is.exe /VERYSILENT /NORESTART
+        curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
+        start /wait innosetup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
         
     - name: Print current directory
       run: |
