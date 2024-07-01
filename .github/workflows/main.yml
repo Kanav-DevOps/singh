@@ -29,7 +29,13 @@ jobs:
         
     - name: Build executable
       run: |
+        dir
         pyinstaller --onefile age_cal.py  # Adjust path as needed
+
+    - name: Print current directory
+      run: |
+        echo "Current working directory: $PWD"
+        dir  # List contents of current directory
         
     - name: Upload artifact
       uses: actions/upload-artifact@v2
@@ -75,7 +81,7 @@ jobs:
     - name: Run Inno Setup compiler
       run: |
         dir
-        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup_script.iss
+        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" inno.iss  -NoNewWindow -Wait
         
     - name: Upload Inno Setup installer artifact
       uses: actions/upload-artifact@v2
