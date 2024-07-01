@@ -3,7 +3,7 @@ name: Build and Package Application
 on:
   push:
     branches:
-      - main  # Adjust branch name as per your     main branch
+      - main  # Adjust branch name as per your main branch
 
 jobs:
   build_age_cal_exe:
@@ -89,7 +89,7 @@ jobs:
 
         [Files]
         Source: age_cal/age_cal.exe; DestDir: {app}; Flags: ignoreversion
-        " > setup_scrip.iss
+        " > setup_script.iss
         
     - name: Print current directory
       run: |
@@ -98,9 +98,7 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
-       dir
-       dir age_cal
-        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "inno.iss" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "setup_script.iss" -NoNewWindow -Wait
         
     - name: Print current directory
       run: |
@@ -112,11 +110,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: setup_exe
-        path: setup.exe  # Adjust path to setup.exe output file
-
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: age_cal_exe
-        path: Output\mysetupAPPPP.exe   
+        path: Output\setup.exe  # Adjust path to setup.exe output file
