@@ -98,7 +98,7 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
-        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "setup_script.iss" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "inno.iss" -NoNewWindow -Wait
         
     - name: Print current directory
       run: |
