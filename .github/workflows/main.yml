@@ -110,4 +110,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: setup_exe
-        path: Output\setup.exe  # Adjust path to setup.exe output file
+        path: Output\mysetupAPPPP.exe  # Adjust path to setup.exe output file
