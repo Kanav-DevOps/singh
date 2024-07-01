@@ -98,6 +98,8 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
+       dir
+       dir age_cal
         Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "inno.iss" -NoNewWindow -Wait
         
     - name: Print current directory
