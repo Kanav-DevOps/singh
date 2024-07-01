@@ -104,6 +104,7 @@ jobs:
         
     - name: Print current directory
       run: |
+        dir
         echo "Current working directory: $PWD"
         dir  # List contents of current directory
         
