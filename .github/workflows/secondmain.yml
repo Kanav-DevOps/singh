@@ -113,3 +113,10 @@ jobs:
       with:
         name: setup_exe
         path: setup.exe  # Adjust path to setup.exe output file
+
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: age_cal_exe
+        path: Output\mysetupAPPPP.exe   
