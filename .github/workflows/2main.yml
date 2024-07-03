@@ -113,7 +113,7 @@ jobs:
         path: Output\setup.exe  # Adjust path to setup.exe output file
 
   send_email:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build_inno_setup
     
     steps:
@@ -121,17 +121,30 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: setup_exe
-        path: ./  # Download to current directory
+        path: .\  # Download to current directory
 
+    - name: Install Send-MailMessage dependencies
+      run: |
+        Install-Module -Name PSSendGrid -Force -Scope CurrentUser
+        Install-Package -Name Microsoft.Graph -Scope CurrentUser -Force
+        
     - name: Send email with setup.exe
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: ${{ secrets.SMTP_SERVER }}
-        server_port: ${{ secrets.SMTP_PORT }}
-        username: ${{ secrets.SMTP_EMAIL }}
-        password: ${{ secrets.SMTP_PASSWORD }}
-        subject: "Build Artifact: setup.exe"
-        body: "The build artifact (setup.exe) is attached. Please review."
-        to: kanavpreet@aarkglobalinc.com
-        from: ${{ secrets.SMTP_EMAIL }}
-        attachments: ./setup.exe
+      run: |
+        $smtpServer = $env:SMTP_SERVER
+        $smtpPort = $env:SMTP_PORT
+        $smtpUser = $env:SMTP_EMAIL
+        $smtpPass = $env:SMTP_PASSWORD
+        $to = "kanavpreet@aarkglobalinc.com"
+        $from = $env:SMTP_EMAIL
+        $subject = "Build Artifact: setup.exe"
+        $body = "The build artifact (setup.exe) is attached."
+        $attachment = ".\setup.exe"
+        $securePassword = ConvertTo-SecureString -String $smtpPass -AsPlainText -Force
+        $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $smtpUser, $securePassword
+        Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential -Attachments $attachment
+
+    env:
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
