@@ -75,10 +75,17 @@ jobs:
       with:
         name: setup_exe
         path: Output\setup.exe
+      
 
   send_email:
     runs-on: windows-latest
     needs: build_inno_setup
+
+        - name: checking
+        run: |
+          dir
+          pwd 
+        
     
     steps:
     - name: Download setup.exe artifact
