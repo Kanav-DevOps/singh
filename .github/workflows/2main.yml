@@ -81,10 +81,6 @@ jobs:
     runs-on: windows-latest
     needs: build_inno_setup
 
-        - name: checking
-        run: |
-          dir
-          pwd 
         
     
     steps:
@@ -96,6 +92,8 @@ jobs:
         
     - name: Install Send-MailMessage dependencies
       run: |
+        dir
+        pwd
         Install-Module -Name PSSendGrid -Force -Scope CurrentUser
         Install-Package -Name Microsoft.Graph -Scope CurrentUser -Force
         
