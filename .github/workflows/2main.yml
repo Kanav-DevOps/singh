@@ -50,6 +50,15 @@ jobs:
     - name: Print current directory contents
       run: |
         dir Output
+        
+    - name: Check SMTP environment variables
+      run: |
+        echo "SMTP_SERVER: $env:SMTP_SERVER"
+        echo "SMTP_PORT: $env:SMTP_PORT"
+        echo "SMTP_EMAIL: $env:SMTP_EMAIL"
+        if (-not $env:SMTP_SERVER -or -not $env:SMTP_PORT -or -not $env:SMTP_EMAIL -or -not $env:SMTP_PASSWORD) {
+          Write-Error "One or more required SMTP environment variables are missing or empty."
+        }
 
     - name: Send email with setup.exe
       run: |
@@ -71,4 +80,3 @@ jobs:
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
       SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-
