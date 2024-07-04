@@ -64,7 +64,8 @@ jobs:
         
     - name: Print current directory contents
       run: |
-        echo "Current directory contents:"
+        pwd
+        dir
         dir Output
         
     - name: Upload Inno Setup installer artifact
