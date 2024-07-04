@@ -55,10 +55,7 @@ jobs:
         dir Output
         
         
-    - name: Install Send-MailMessage dependencies
-      run: |
-        Install-Module -Name PSSendGrid -Force -Scope CurrentUser
-        Install-Package -Name Microsoft.Graph -Scope CurrentUser -ProviderName NuGet -Force
+  
         
     - name: Send email with setup.exe
       run: |
