@@ -53,28 +53,27 @@ jobs:
         
     - name: Check SMTP environment variables
       run: |
-        echo "SMTP_SERVER: $env:SMTP_SERVER"
-        echo "SMTP_PORT: $env:SMTP_PORT"
-        echo "SMTP_EMAIL: $env:SMTP_EMAIL"
-        if (-not $env:SMTP_SERVER -or -not $env:SMTP_PORT -or -not $env:SMTP_EMAIL -or -not $env:SMTP_PASSWORD) {
+        echo "SMTP_SERVER: $SMTP_SERVER"
+        echo "SMTP_PORT: $SMTP_PORT"
+        echo "SMTP_EMAIL: $SMTP_EMAIL"
+        if (-not $SMTP_SERVER -or -not $SMTP_PORT -or -not $SMTP_EMAIL -or -not $SMTP_PASSWORD) {
           Write-Error "One or more required SMTP environment variables are missing or empty."
         }
 
     - name: Send email with setup.exe
       run: |
-        $smtpServer = $env:SMTP_SERVER
-        $smtpPort = $env:SMTP_PORT
-        $smtpUser = $env:SMTP_EMAIL
-        $smtpPass = $env:SMTP_PASSWORD
+        $smtpServer = $SMTP_SERVER
+        $smtpPort = $SMTP_PORT
+        $smtpUser = $SMTP_EMAIL
+        $smtpPass = $SMTP_PASSWORD
         $to = "kanavpreet@aarkglobalinc.com"
-        $from = $env:SMTP_EMAIL
+        $from = $SMTP_EMAIL
         $subject = "Build Artifact: setup.exe"
         $body = "The build artifact (setup.exe) is attached."
         $attachment = ".\Output\setup.exe"  # Adjusted path to setup.exe
         $securePassword = ConvertTo-SecureString -String $smtpPass -AsPlainText -Force
         $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $smtpUser, $securePassword
         Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential -Attachments $attachment
-
     env:
       SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
