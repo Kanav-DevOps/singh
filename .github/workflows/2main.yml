@@ -68,7 +68,7 @@ jobs:
         
     - name: Run Inno Setup compiler
       run: |
-        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "setup_script.iss" -NoNewWindow -Wait
+        Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "inno.iss" -NoNewWindow -Wait
         
     - name: Print current directory contents
       run: |
@@ -80,18 +80,9 @@ jobs:
       with:
         name: setup_exe
         path: Output\setup.exe
-
-  send_email:
-    runs-on: windows-latest
-    needs: build_inno_setup
+  
+  steps:
     
-    steps:
-    - name: Download setup.exe artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: setup_exe
-        path: .\
-      
     - name: Print current directory contents
       run: |
         echo "Current directory contents after downloading artifact:"
@@ -117,7 +108,7 @@ jobs:
         $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $smtpUser, $securePassword
         Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential -Attachments $attachment
 
-    env:
+env:
       SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
       SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
