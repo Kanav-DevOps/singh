@@ -43,20 +43,14 @@ jobs:
         curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
         Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
         
-    
-        
     - name: Run Inno Setup compiler
       run: |
         Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "inno.iss" -NoNewWindow -Wait
         
     - name: Print current directory contents
       run: |
-        
         dir Output
-        
-        
-  
-        
+
     - name: Send email with setup.exe
       run: |
         $smtpServer = $env:SMTP_SERVER
@@ -67,7 +61,7 @@ jobs:
         $from = $env:SMTP_EMAIL
         $subject = "Build Artifact: setup.exe"
         $body = "The build artifact (setup.exe) is attached."
-        $attachment = ".\setup.exe"
+        $attachment = ".\Output\setup.exe"  # Adjusted path to setup.exe
         $securePassword = ConvertTo-SecureString -String $smtpPass -AsPlainText -Force
         $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $smtpUser, $securePassword
         Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential -Attachments $attachment
@@ -77,3 +71,4 @@ jobs:
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
       SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
