@@ -54,22 +54,6 @@ jobs:
         
         dir Output
         
-    - name: Upload Inno Setup installer artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: setup_exe
-        path: Output\setup.exe
-        
-    - name: Download setup.exe artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: setup_exe
-        path: .\
-        
-    - name: Print current directory contents
-      run: |
-       
-        dir .\
         
     - name: Install Send-MailMessage dependencies
       run: |
