@@ -1,5 +1,5 @@
 name: Build, Package, and Email Application
-  
+
 on:
   push:
     branches:
@@ -9,6 +9,12 @@ jobs:
   build_package_and_email:
     runs-on: windows-latest
     
+    env:
+      SMTP_SERVER: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_SERVER }}
+      SMTP_PORT: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_PORT }}
+      SMTP_EMAIL: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_PASSWORD }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -59,7 +65,7 @@ jobs:
         if (-not $SMTP_SERVER -or -not $SMTP_PORT -or -not $SMTP_EMAIL -or -not $SMTP_PASSWORD) {
           Write-Error "One or more required SMTP environment variables are missing or empty."
         }
-
+      
     - name: Send email with setup.exe
       run: |
         $smtpServer = $SMTP_SERVER
@@ -74,8 +80,9 @@ jobs:
         $securePassword = ConvertTo-SecureString -String $smtpPass -AsPlainText -Force
         $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $smtpUser, $securePassword
         Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $smtpPort -UseSsl -Credential $credential -Attachments $attachment
+
     env:
-      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-      SMTP_PORT: ${{ secrets.SMTP_PORT }}
-      SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
-      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_SERVER: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_SERVER }}
+      SMTP_PORT: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_PORT }}
+      SMTP_EMAIL: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.mailenv.ACTIONS_SECRETS.SMTP_PASSWORD }}
