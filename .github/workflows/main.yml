@@ -2,7 +2,7 @@ name: Build and Package
 
 on:
   release:
-    types: 
+    types:  
       - published
 
   push:
