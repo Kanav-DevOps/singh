@@ -21,41 +21,7 @@ jobs:
 
       - name: Download release artifact
         run: |
-          $latestRelease = gh release view --json assets --jq '.assets[0].url'
-          Invoke-WebRequest -Uri $latestRelease -OutFile release.zip
-
-      - name: Unzip release artifact
-        run: |
-          Expand-Archive -Path release.zip -DestinationPath ./release
-
-      - name: Download and install Inno Setup
-        run: |
-          curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
-          Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
-
-      - name: Dependency folder and making .exe
-        run: |
-          tar -xf ./release/Aark_Host_Simulator-Version-1.00.00.0006.exe
-          mkdir ./release/Dependencyfolder
-          move ./release/assessment_reports ./release/Dependencyfolder
-
-      - name: Run Inno Setup compiler
-        run: |
-          Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "Devops/setupscript22.iss" -NoNewWindow -Wait
-
-      - name: Print current directory contents
-        run: |
           dir
-          dir ./release/Devops
-          dir ./release
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Upload Inno Setup installer artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: AHS-Setup_exe
-          path: ./release/setup # Adjust path to setup.exe output file
+          pwd
+          mkdir kp
+          dir kp
