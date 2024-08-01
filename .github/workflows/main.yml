@@ -7,8 +7,7 @@ on:
 
   push:
     paths:
-      - requirements.txt # Trigger when setup.iss is changed
-      
+      - setup.iss # Trigger when setup.iss is changed
 
 jobs:
   build_package_and_email:
@@ -20,27 +19,14 @@ jobs:
 
       - name: Download and install Inno Setup
         run: |
-         dir cd D:\a\AarkFence-Server-22\
-          
-
           curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
           Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
 
-
       - name: Dependency folder and making .exe
         run: |
-          dir
           tar -xf D:/a/singh/singh/Aark_Host_Simulator-Version-1.00.00.0006.exe
-          
-          mkdir  D:/a/singh/singh/\Dependencyfolder
-          
-          
-          dir D:/a/singh/singh/
-          dir  D:/a/singh/singh/\Dependencyfolder
-          move D:/a/singh/singh/\assessment_reports  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          
-          
-
+          mkdir D:/a/singh/singh/Dependencyfolder
+          move D:/a/singh/singh/assessment_reports D:/a/singh/singh/Dependencyfolder
 
       - name: Run Inno Setup compiler
         run: |
@@ -49,20 +35,14 @@ jobs:
       - name: Print current directory contents
         run: |
           dir
-
-      - name: Print current directory contents
-        run: |
           dir D:/a/singh/singh/Devops
-
-      - name: Print current directory contents
-        run: |
-          dir       
           dir D:/a/singh/singh/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Upload Inno Setup installer artifact
         uses: actions/upload-artifact@v4
         with:
