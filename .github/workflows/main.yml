@@ -7,7 +7,7 @@ on:
 
   push:
     paths:
-      - main.yml  # Trigger when setup.iss is changed
+      - requirements.txt # Trigger when setup.iss is changed
       
 
 jobs:
