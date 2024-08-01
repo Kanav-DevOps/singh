@@ -16,6 +16,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Ensure the entire history is fetched to access the release
+
+      - name: Download release artifact
+        run: |
+          $latestRelease = gh release view --json assets --jq '.assets[0].url'
+          Invoke-WebRequest -Uri $latestRelease -OutFile release.zip
+
+      - name: Unzip release artifact
+        run: |
+          Expand-Archive -Path release.zip -DestinationPath ./release
 
       - name: Download and install Inno Setup
         run: |
@@ -24,9 +35,9 @@ jobs:
 
       - name: Dependency folder and making .exe
         run: |
-          tar -xf D:/a/singh/singh/Aark_Host_Simulator-Version-1.00.00.0006.exe
-          mkdir D:/a/singh/singh/Dependencyfolder
-          move D:/a/singh/singh/assessment_reports D:/a/singh/singh/Dependencyfolder
+          tar -xf ./release/Aark_Host_Simulator-Version-1.00.00.0006.exe
+          mkdir ./release/Dependencyfolder
+          move ./release/assessment_reports ./release/Dependencyfolder
 
       - name: Run Inno Setup compiler
         run: |
@@ -35,8 +46,8 @@ jobs:
       - name: Print current directory contents
         run: |
           dir
-          dir D:/a/singh/singh/Devops
-          dir D:/a/singh/singh/
+          dir ./release/Devops
+          dir ./release
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -47,4 +58,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: AHS-Setup_exe
-          path: D:/a/singh/singh/setup # Adjust path to setup.exe output file
+          path: ./release/setup # Adjust path to setup.exe output file
