@@ -1,0 +1,74 @@
+name: Build and Package
+
+on:
+  release:
+    types: 
+      - published
+
+jobs:
+  build_package_and_email:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download and install Inno Setup
+        run: |
+         dir cd D:\a\AarkFence-Server-22\
+          cd D:\a\AarkFence-Server-22\AarkFence-Server-22
+          mkdir D:\a\AarkFence-Server-22\AarkFence-Server-22\setup
+          curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
+          Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
+
+
+      - name: Dependency folder and making .exe
+        run: |
+          dir
+          tar -xf Aark_Host_Simulator-Version-1.00.00.0006.exe
+          cd
+          mkdir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          cd
+          dir
+          dir D:\a\AarkFence-Server-22\AarkFence-Server-22
+          dir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          move D:\a\AarkFence-Server-22\AarkFence-Server-22\assessment_reports  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          cd
+          move D:\a\AarkFence-Server-22\AarkFence-Server-22\logs  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          move D:\a\AarkFence-Server-22\AarkFence-Server-22\scripts   D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          move D:\a\AarkFence-Server-22\AarkFence-Server-22\system_db_exported_files  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          move D:\a\AarkFence-Server-22\AarkFence-Server-22\icons  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          
+          dir 
+          dir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          move  D:\a\AarkFence-Server-22\AarkFence-Server-22\xml_files  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Devops
+
+
+      - name: Run Inno Setup compiler
+        run: |
+          Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList "Devops/setupscript22.iss" -NoNewWindow -Wait
+
+      - name: Print current directory contents
+        run: |
+          dir
+
+      - name: Print current directory contents
+        run: |
+          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Devops
+
+      - name: Print current directory contents
+        run: |
+          dir       
+          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Upload Inno Setup installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AHS-Setup_exe
+          path: D:\a\AarkFence-Server-22\AarkFence-Server-22\setup # Adjust path to setup.exe output file
