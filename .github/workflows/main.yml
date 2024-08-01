@@ -1,57 +1,41 @@
-name: Release Pipeline
+name: Release Workflow
 
 on:
   release:
-    types:
-      - published  # Trigger when a release is published
+    types: [published]
+  push:
+    paths:
+      - 'requirements.txt'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  fetch_and_unzip:
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 8.0.x  # Adjust the .NET version if needed
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build solution
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: Publish output
-      run: dotnet publish --configuration Release --no-restore --output ./output
-
-    - name: Archive build output
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifact
-        path: ./output
-
-    - name: Fetch and unzip artifact
+    - name: Download release asset
       run: |
-        echo "Fetching artifact..."
-        if [ -z "${{ steps.upload-artifact.outputs.artifact-id }}" ]; then
-          echo "Artifact ID is undefined"
-          exit 1
-        fi
-        artifact_id=${{ steps.upload-artifact.outputs.artifact-id }}
-        echo "Artifact ID: $artifact_id"
-        # Your fetch and unzip logic here
+        $ReleaseId = $env:GITHUB_REF_NAME
+        $Repo = $env:GITHUB_REPOSITORY
+        $Token = $env:GITHUB_TOKEN
 
-    - name: Create release notes
-      run: echo "Release notes for $(date)" > release_notes.txt
+        # Fetch release information
+        $Release = Invoke-RestMethod -Headers @{ Authorization = "token $Token" } -Uri "https://api.github.com/repos/$Repo/releases/tags/$ReleaseId"
 
-    - name: Upload release notes
-      uses: actions/upload-artifact@v2
-      with:
-        name: release-notes
-        path: release_notes.txt
+        # Find the asset by name
+        $Asset = $Release.assets | Where-Object { $_.name -eq "Aark_Host_Simulator-Version-1.00.00.0006.exe.zip" }
+        if (-not $Asset) { throw "Asset not found" }
+
+        # Download the asset
+        Invoke-RestMethod -Headers @{ Authorization = "token $Token"; Accept = "application/octet-stream" } -Uri $Asset.url -OutFile "release.zip"
+
+    - name: Print current directory path
+      run: echo "Current directory:%cd%"
+
+    - name: Unzip release asset
+      run: powershell -Command "Expand-Archive -Path ./release.zip -DestinationPath ./release"
+
+    - name: Print contents of unzipped directory
+      run: dir ./release
