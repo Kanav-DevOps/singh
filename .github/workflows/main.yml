@@ -7,7 +7,7 @@ on:
 
   push:
     paths:
-      - setup.iss # Trigger when setup.iss is changed
+      - requirements.txt # Trigger when setup.iss is changed
 
 jobs:
   build_package_and_email:
