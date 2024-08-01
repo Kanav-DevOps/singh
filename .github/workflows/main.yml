@@ -16,8 +16,8 @@ jobs:
       - name: Download and install Inno Setup
         run: |
          dir cd D:\a\AarkFence-Server-22\
-          cd D:\a\AarkFence-Server-22\AarkFence-Server-22
-          mkdir D:\a\AarkFence-Server-22\AarkFence-Server-22\setup
+          
+
           curl -L -o innosetup.exe "https://jrsoftware.org/download.php/is.exe"
           Start-Process -FilePath "innosetup.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
 
