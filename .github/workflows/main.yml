@@ -25,25 +25,16 @@ jobs:
       - name: Dependency folder and making .exe
         run: |
           dir
-          tar -xf Aark_Host_Simulator-Version-1.00.00.0006.exe
-          cd
-          mkdir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          cd
-          dir
-          dir D:\a\AarkFence-Server-22\AarkFence-Server-22
-          dir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          move D:\a\AarkFence-Server-22\AarkFence-Server-22\assessment_reports  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          cd
-          move D:\a\AarkFence-Server-22\AarkFence-Server-22\logs  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          move D:\a\AarkFence-Server-22\AarkFence-Server-22\scripts   D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          move D:\a\AarkFence-Server-22\AarkFence-Server-22\system_db_exported_files  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          move D:\a\AarkFence-Server-22\AarkFence-Server-22\icons  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          tar -xf D:/a/singh/singh/Aark_Host_Simulator-Version-1.00.00.0006.exe
           
-          dir 
-          dir  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          move  D:\a\AarkFence-Server-22\AarkFence-Server-22\xml_files  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
-          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Devops
+          mkdir  D:/a/singh/singh/\Dependencyfolder
+          
+          
+          dir D:/a/singh/singh/
+          dir  D:/a/singh/singh/\Dependencyfolder
+          move D:/a/singh/singh/\assessment_reports  D:\a\AarkFence-Server-22\AarkFence-Server-22\Dependencyfolder
+          
+          
 
 
       - name: Run Inno Setup compiler
@@ -56,12 +47,12 @@ jobs:
 
       - name: Print current directory contents
         run: |
-          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\Devops
+          dir D:/a/singh/singh/Devops
 
       - name: Print current directory contents
         run: |
           dir       
-          dir D:\a\AarkFence-Server-22\AarkFence-Server-22\
+          dir D:/a/singh/singh/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -71,4 +62,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: AHS-Setup_exe
-          path: D:\a\AarkFence-Server-22\AarkFence-Server-22\setup # Adjust path to setup.exe output file
+          path: D:/a/singh/singh/setup # Adjust path to setup.exe output file
