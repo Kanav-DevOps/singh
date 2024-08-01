@@ -49,7 +49,7 @@ jobs:
           fs.writeFileSync('./release.zip', Buffer.from(assetData));
 
     - name: Print current directory path
-      run: echo "Current directory: %cd%"
+      run: echo "Current directory:%cd%"
 
     - name: Unzip release asset
       run: powershell -Command "Expand-Archive -Path ./release.zip -DestinationPath ./release"
