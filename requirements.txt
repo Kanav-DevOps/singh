@@ -1,3 +1,3 @@
 pandas
 jinja2
-apj abdul kalam
+apj abdul kala
