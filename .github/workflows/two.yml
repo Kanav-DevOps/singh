@@ -44,3 +44,7 @@ jobs:
     - name: Change directory to extracted folder
       run: |
         cd extracted
+        pwd
+        dir
+        cd Aark_Host_Simulator-Version-1.00.00.0006.exe
+        dir
