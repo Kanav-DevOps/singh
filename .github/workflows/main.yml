@@ -1,41 +1,37 @@
-name: Release Workflow
+name: Fetch and Extract Release
 
 on:
-  release:
-    types: [published]
   push:
-    paths:
-      - 'requirements.txt'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  fetch_and_unzip:
+  fetch-release:
     runs-on: windows-latest
-
+    
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Download release asset
+    - name: Fetch latest release
+      id: fetch_release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const latestRelease = await github.rest.repos.getLatestRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          core.setOutput("tag", latestRelease.data.tag_name);
+          core.setOutput("zipball_url", latestRelease.data.zipball_url);
+
+    - name: Download release zip
       run: |
-        $ReleaseId = $env:GITHUB_REF_NAME
-        $Repo = $env:GITHUB_REPOSITORY
-        $Token = $env:GITHUB_TOKEN
+        curl -L ${{ steps.fetch_release.outputs.zipball_url }} -o release.zip
 
-        # Fetch release information
-        $Release = Invoke-RestMethod -Headers @{ Authorization = "token $Token" } -Uri "https://api.github.com/repos/$Repo/releases/tags/$ReleaseId"
-
-        # Find the asset by name
-        $Asset = $Release.assets | Where-Object { $_.name -eq "Aark_Host_Simulator-Version-1.00.00.0006.exe.zip" }
-        if (-not $Asset) { throw "Asset not found" }
-
-        # Download the asset
-        Invoke-RestMethod -Headers @{ Authorization = "token $Token"; Accept = "application/octet-stream" } -Uri $Asset.url -OutFile "release.zip"
-
-    - name: Print current directory path
-      run: echo "Current directory:%cd%"
-
-    - name: Unzip release asset
-      run: powershell -Command "Expand-Archive -Path ./release.zip -DestinationPath ./release"
-
-    - name: Print contents of unzipped directory
-      run: dir ./release
+    - name: Extract release zip
+      run: |
+        tar -xf release.zip
