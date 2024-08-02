@@ -1,0 +1,46 @@
+name: Fetch and Extract Specific Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  fetch-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Fetch specific release asset URL
+      id: fetch_release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const release = await github.rest.repos.getLatestRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          
+          const asset = release.data.assets.find(asset => asset.name === 'Aark_Host_Simulator-Version-1.00.00.0006.exe.zip');
+          if (!asset) {
+            throw new Error('Asset not found');
+          }
+          
+          core.setOutput("zipball_url", asset.browser_download_url);
+
+    - name: Download release zip
+      run: |
+        curl -L ${{ steps.fetch_release.outputs.zipball_url }} -o Aark_Host_Simulator-Version-1.00.00.0006.exe.zip
+
+    - name: Extract release zip
+      run: |
+        powershell -Command "Expand-Archive -Path 'Aark_Host_Simulator-Version-1.00.00.0006.exe.zip' -DestinationPath './extracted'"
+
+    - name: Change directory to extracted folder
+      run: |
+        cd extracted
