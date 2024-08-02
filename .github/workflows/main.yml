@@ -16,6 +16,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Check repo befor fetching release
+      run: |
+       dir
+
     - name: Fetch latest release
       id: fetch_release
       uses: actions/github-script@v6
@@ -37,4 +41,9 @@ jobs:
       run: |
         tar -xf release.zip
         dir
-        dir release.zip
+
+    - name: Download release zip
+      run: |
+       dir   
+       dir release.zip
+       tar -xf release.zip
