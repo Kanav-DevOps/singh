@@ -45,17 +45,15 @@ jobs:
         powershell -Command "Expand-Archive -Path 'Aark_Host_Simulator-Version-1.00.00.0006.exe.zip' -DestinationPath './extracted'"
         pwd
         cd extracted 
+        dir
+
+    - name: Change directory to extracted folder
+      run: |
         mkdir ktest
+        dir
         powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './ktest'"
         dir
         pwd
         cd ktest
         dir
 
-    - name: Change directory to extracted folder
-      run: |
-        pwd
-        dir
-        
-        pwd
-        dir
