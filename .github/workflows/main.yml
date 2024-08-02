@@ -51,3 +51,6 @@ jobs:
     - name: Change directory to extracted folder
       run: |
         cd $(tar -tf release.zip | head -n 1 | cut -d/ -f1)
+        dir 
+        pwd
+        
