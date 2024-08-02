@@ -37,3 +37,4 @@ jobs:
       run: |
         tar -xf release.zip
         dir
+        dir release.zip
