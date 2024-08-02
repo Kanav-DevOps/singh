@@ -47,6 +47,7 @@ jobs:
         cd extracted 
         powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './ktest'"
         dir
+        pwd
         cd ktest
         dir
 
