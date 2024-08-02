@@ -16,6 +16,22 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+
+    - name: Download test release zip
+      run: |
+        curl -L https://github.com/${{ github.repository }}/archive/refs/tags/${{ steps.fetch_release.outputs.tag }}.zip -o source_code.zip
+
+
+
+    - name:  extracted 
+      run: |
+        mkdir ktest
+        dir
+        powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './extracted'"
+        dir
+        tar -xf source_code.zip
+        pwd
+
     - name: Fetch specific release asset URL
       id: fetch_release
       uses: actions/github-script@v6
