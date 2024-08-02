@@ -26,7 +26,7 @@ jobs:
             repo: context.repo.repo,
           });
           
-          const asset = release.data.assets.find(asset => asset.name === 'Aark_Host_Simulator-Version-1.00.00.0006.exe.zip');
+          const asset = release.data.assets.find(asset => asset.name === 'source_code.zip');
           if (!asset) {
             throw new Error('Asset not found');
           }
@@ -35,25 +35,20 @@ jobs:
 
     - name: Download release zip
       run: |
-        curl -L ${{ steps.fetch_release.outputs.zipball_url }} -o Aark_Host_Simulator-Version-1.00.00.0006.exe.zip
         curl -L https://github.com/${{ github.repository }}/archive/refs/tags/${{ steps.fetch_release.outputs.tag }}.zip -o source_code.zip
 
 
     - name: Extract release zip
-      run: |
-        dir
-        powershell -Command "Expand-Archive -Path 'Aark_Host_Simulator-Version-1.00.00.0006.exe.zip' -DestinationPath './extracted'"
-        pwd
-        cd extracted 
+      run: | 
         dir
 
     - name: Change directory to extracted folder
       run: |
         mkdir ktest
         dir
-        powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './ktest'"
+        powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './extracted'"
         dir
         pwd
-        cd ktest
+        cd extracted
         dir
 
