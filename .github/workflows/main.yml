@@ -30,8 +30,10 @@ jobs:
 
     - name: Download release zip
       run: |
+       dir
         curl -L ${{ steps.fetch_release.outputs.zipball_url }} -o release.zip
 
     - name: Extract release zip
       run: |
         tar -xf release.zip
+        dir
