@@ -48,8 +48,3 @@ jobs:
         cd extracted
         pwd
         dir
-        
-        
-
-        dir release.zip
-        cd release.zip
