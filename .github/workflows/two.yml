@@ -48,6 +48,7 @@ jobs:
         dir
         powershell -Command "Expand-Archive -Path 'source_code.zip' -DestinationPath './extracted'"
         dir
+        tar -xf source_code.zip
         pwd
         cd extracted
         dir
