@@ -1,3 +1,0 @@
-ndas
-jinja2
-apj abdul 
